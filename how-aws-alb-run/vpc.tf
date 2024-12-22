@@ -24,6 +24,7 @@ resource "aws_internet_gateway" "main" {
 ##########################
 resource "aws_subnet" "public-1a" {
   vpc_id = aws_vpc.main.id
+  availability_zone = "ap-northeast-1a"
   cidr_block = "10.0.1.0/24"
   tags = {
     Name = "${local.app_name}-public-1a"
@@ -32,6 +33,7 @@ resource "aws_subnet" "public-1a" {
 
 resource "aws_subnet" "public-1c" {
   vpc_id = aws_vpc.main.id
+  availability_zone = "ap-northeast-1c"
   cidr_block = "10.0.2.0/24"
   tags = {
     Name = "${local.app_name}-public-1c"
@@ -43,17 +45,19 @@ resource "aws_subnet" "public-1c" {
 ##########################
 resource "aws_subnet" "private-1a" {
   vpc_id = aws_vpc.main.id
+  availability_zone = "ap-northeast-1a"
   cidr_block = "10.0.10.0/24"
   tags = {
     Name = "${local.app_name}-private-1a"
   }
 }
 
-resource "aws_subnet" "private-1b" {
+resource "aws_subnet" "private-1c" {
   vpc_id = aws_vpc.main.id
+  availability_zone = "ap-northeast-1c"
   cidr_block = "10.0.20.0/24"
   tags = {
-    Name = "${local.app_name}-private-1b"
+    Name = "${local.app_name}-private-1c"
   }
 }
 
@@ -119,5 +123,10 @@ resource "aws_route_table" "private" {
 
 resource "aws_route_table_association" "private-1a-to-natgw" {
     subnet_id = aws_subnet.private-1a.id
+    route_table_id = aws_route_table.private.id
+}
+
+resource "aws_route_table_association" "private-1c-to-natgw" {
+    subnet_id = aws_subnet.private-1c.id
     route_table_id = aws_route_table.private.id
 }
